@@ -1,24 +1,19 @@
 package com.example.myapplication6;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -28,11 +23,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
 
 
 public class MainActivity extends AppCompatActivity
@@ -46,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     AlertDialog alert;
     Handler mHandler = new Handler();
     myDialog builder;
+    myDialog2 builder2;
     public  static  int myId=-1;
     public  static  int gameID=-1;
 
@@ -55,39 +51,53 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        start = (Button) findViewById(R.id.start);
-        close = (Button) findViewById(R.id.closeb);
+
+
         builder = new myDialog(this);
-       snake= (Button) findViewById(R.id.snake);
+        builder2 = new myDialog2(this);
+       snake= (Button) findViewById(R.id.snakebutton);
 
 
-        start.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-                start();
-            }
-        });
-
-        close.setOnClickListener(new View.OnClickListener()
-        {
 
 
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacksAndMessages(null);
 
-                ws.close(1000, "Goodbye !");
-            }
-        });
-
+        start();
 
 
         Button pong;
-        pong= findViewById(R.id.pongButton);
+        pong= findViewById(R.id.pongbutton);
         pong.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+
+
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame1");
+                    mesage.put("clientId", myId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ws.send(mesage.toString());
+
+                alert = builder.create();
+
+                //Setting the title manually
+
+                alert.setTitle("AlertDialogExample");
+                alert.show();
+
+
+            }
+        });
+
+        ImageView pongimg;
+        pongimg= findViewById(R.id.pongimg);
+        pongimg.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -130,39 +140,82 @@ public class MainActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                alert = builder2.create();
+
+                //Setting the title manually
+
+                alert.setTitle("AlertDialogExample");
+                alert.show();
                 ws.send(mesage.toString());
-                Intent intent = new Intent(MainActivity.this, Snake.class);
 
 
-                startActivity(intent);
 
-//                JSONObject mesage = new JSONObject();
-//                try {
-//                    mesage.put("method", "iwantgame1");
-//                    mesage.put("clientId", myId);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                ws.send(mesage.toString());
-//
-//                alert = builder.create();
-//
-//                //Setting the title manually
-//
-//                alert.setTitle("AlertDialogExample");
-//                alert.show();
+
+            }
+        });
+        ImageView snakeimg;
+        snakeimg= findViewById(R.id.smakeimg);
+        snakeimg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame2");
+                    mesage.put("clientId", MainActivity.myId);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                alert = builder2.create();
+
+                //Setting the title manually
+
+                alert.setTitle("AlertDialogExample");
+                alert.show();
+                ws.send(mesage.toString());
+
+
 
 
             }
         });
 
 
+        Button Tetris= (Button) findViewById(R.id.button);
+        Tetris.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, Choose_game.class);
+
+
+                startActivity(intent);
+            }
+        });
+        ImageView tetrisimg;
+        tetrisimg= findViewById(R.id.tetrisimg);
+        tetrisimg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, Choose_game.class);
+
+
+                startActivity(intent);
+            }
+        });
 
 
 
-
-
-}
+    }
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEvent(MessegeEvent event) throws JSONException
     {
@@ -184,6 +237,31 @@ public class MainActivity extends AppCompatActivity
 
               startActivity(intent);
       }
+
+        if(mesage.getString("method").equals("loadgame2"))
+
+        {
+            alert.cancel();
+            gameID=mesage.getInt("gameID");
+
+            Intent intent = new Intent(MainActivity.this, Snake.class);
+
+
+            startActivity(intent);
+        }
+        if(mesage.getString("method").equals("gameSnakeStat"))
+
+        {
+            ArrayList<int[]> list = new ArrayList<>();
+
+
+
+            for(int i=0; i< mesage.getJSONArray("zmey").length(); i++)
+            {
+                list.add(new int[]{mesage.getJSONArray("zmey").getJSONArray(i).getInt(0),mesage.getJSONArray("zmey").getJSONArray(i).getInt(1)});
+
+            }
+        }
 
 
         Log.w("",event.message);
@@ -223,6 +301,42 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    class myDialog2 extends AlertDialog.Builder
+    {
+
+        public myDialog2(Context context)
+        {
+            super(context);
+            this.setMessage("Вы хотите выйти из очереди в игру ?")
+
+
+                    .setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            //  Action for 'NO' Button
+
+
+                            JSONObject mesage = new JSONObject();
+                            try {
+                                mesage.put("method", "stopfind2");
+                                mesage.put("id", MainActivity.myId);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ws.send(mesage.toString());
+
+                            dialog.cancel();
+                            Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+    }
+
     private void start()
     {
         Request request ;
@@ -242,18 +356,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public class MyThread extends Thread
-    {
-        public void run() {
-            Log.d("", "Mой поток запущен...");
-            Request request ;
 
-            OkHttpClient client = new OkHttpClient();
-            request = new Request.Builder().url("ws://192.168.1.46:7960").build();
-
-            ws = client.newWebSocket(request, new EchoWebSocketListener());
-        }
-    }
 
 
     @Override
@@ -272,6 +375,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+
         EventBus.getDefault().register(this);
     }
     @Override

@@ -3,4 +3,4 @@
     android:id="@+id/csl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.MyApplication6" />
+    android:theme="@style/Theme.MyApplication" />
