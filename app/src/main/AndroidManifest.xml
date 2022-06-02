@@ -32,6 +32,10 @@
             android:theme="@style/Theme.MyApplication6"
             android:screenOrientation="portrait"
             ></activity>
+        <activity android:name="Snake"
+            android:theme="@style/Theme.MyApplication6"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

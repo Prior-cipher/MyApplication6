@@ -1,7 +1,9 @@
 package com.example.myapplication6;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.hardware.Sensor;
@@ -20,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -45,7 +48,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
     FrameLayout game;
 
     SensorManager sm;
-
+    Boolean flag= true;
     int gameID;
     TextView scoreOne;
     TextView scoreTwo;
@@ -168,13 +171,13 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
 
 
              ws.send(mesage.toString());
-//                if(scoreOne.getText().toString()!=String.valueOf(logic.scoreO) ||scoreTwo.getText().toString()!=String.valueOf(logic.score1))
-//                {
-//                    scoreOne.setText(String.valueOf(logic.scoreO));
-//                    scoreTwo.setText(String.valueOf(logic.score1));
-//                }
+                if(scoreOne.getText().toString()!=String.valueOf(pl.scoreO) ||scoreTwo.getText().toString()!=String.valueOf(pl.score1))
+                {
+                    scoreOne.setText(String.valueOf(pl.scoreO));
+                    scoreTwo.setText(String.valueOf(pl.score1));
+                }
                 //pongView.invalidate();
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 100);
 
 
             }
@@ -183,13 +186,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
         loop.run();
     }
 
-    protected  void setData(int[] data)
-    {
-        pl.ballX=data[0];
-        pl.ballY=data[1];
-        pl.curentPosition=data[2];
-        pl.enemyPosition=data[3];
-}
+
     private void loadNewSensorData(SensorEvent event)
     {
         final int type = event.sensor.getType(); //Определяем тип датчика
@@ -289,11 +286,26 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
             EventBus.getDefault().register(this);
     }
     @Override
-    protected void onDestroy() {
-        handler.removeCallbacks(loop);
+    protected void onDestroy()
+    {
+        if(flag) {
 
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
+            JSONObject mesage = new JSONObject();
+            try {
+                mesage.put("method", "surender1");
+                mesage.put("id", MainActivity.myId);
+
+                mesage.put("gameID", gameID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ws.send(mesage.toString());
+
+        }
+        handler.removeCallbacks(loop);
+            super.onDestroy();
+            EventBus.getDefault().unregister(this);
+
     }
 
 
@@ -309,13 +321,80 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
             pl.ballY= userJson.getInt("ballY");
             pl.curentPosition= userJson.getInt("curentPosition");
             pl.enemyPosition= userJson.getInt("enemyPosition");
+            pl.scoreO=userJson.getInt("scoreO");
+            pl.score1=userJson.getInt("score1");
             pongView.invalidate();
         }
-        else if(userJson.getString("method").equals("canclegame1"))
+        else if(userJson.getString("method").equals("endgame1"))
         {
-            this.onBackPressed();
+
+            flag=false;
+            String s="";
+            if(userJson.getBoolean("win1"))
+            {
+
+                s= String.format("Игра оконченна вы вйграли ваш счет = %d", this.pl.scoreO*1000);
+            }
+           else {
+                s= String.format("Игра оконченна вы програли ваш счет = %d", this.pl.scoreO*1000);
+            }
+            winDialog builder = new winDialog(this,s);
+            AlertDialog alert = builder.create();
+            alert.onBackPressed();
+            //Setting the title manually
+
+            alert.setTitle("Сообщение от сервера");
+            alert.show();
+        }
+        else if(userJson.getString("method").equals("surender1"))
+        {
+            flag=false;
+            String s="";
+
+
+                s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", this.pl.scoreO*1000);
+
+
+            winDialog builder = new winDialog(this,s);
+            AlertDialog alert = builder.create();
+            alert.onBackPressed();
+            //Setting the title manually
+
+            alert.setTitle("Сообщение от сервера");
+            alert.show();
+
         }
 
     }
+    class winDialog extends AlertDialog.Builder
+    {
+
+        public winDialog(Context context,String text)
+        {
+            super(context);
+            handler.removeCallbacks(loop);
+
+
+            EventBus.getDefault().unregister(this);
+            this.setMessage(text)
+
+
+                    .setNegativeButton("Вернутся в меню", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+
+                            //  Action for 'NO' Button
+
+                            dialog.cancel();
+                            PingPong.super.onBackPressed();
+                            Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+    }
+
+
 
 }

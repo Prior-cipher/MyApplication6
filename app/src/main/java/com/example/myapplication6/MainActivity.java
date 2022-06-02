@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity
     public static WebSocket ws;
     private Button start;
     private Button close;
-    private Button MEssage;
-    private TextView output;
+    private Button  snake;
+
+    AlertDialog alert;
     Handler mHandler = new Handler();
     myDialog builder;
     public  static  int myId=-1;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         start = (Button) findViewById(R.id.start);
         close = (Button) findViewById(R.id.closeb);
         builder = new myDialog(this);
-        output = (TextView) findViewById(R.id.output);
+       snake= (Button) findViewById(R.id.snake);
 
 
         start.setOnClickListener(new View.OnClickListener()
@@ -103,8 +104,8 @@ public class MainActivity extends AppCompatActivity
                 }
                 ws.send(mesage.toString());
 
-                AlertDialog alert = builder.create();
-                alert.onBackPressed();
+                alert = builder.create();
+
                 //Setting the title manually
 
                 alert.setTitle("AlertDialogExample");
@@ -114,10 +115,54 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        snake.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
-    }
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame2");
+                    mesage.put("clientId", MainActivity.myId);
 
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ws.send(mesage.toString());
+                Intent intent = new Intent(MainActivity.this, Snake.class);
+
+
+                startActivity(intent);
+
+//                JSONObject mesage = new JSONObject();
+//                try {
+//                    mesage.put("method", "iwantgame1");
+//                    mesage.put("clientId", myId);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                ws.send(mesage.toString());
+//
+//                alert = builder.create();
+//
+//                //Setting the title manually
+//
+//                alert.setTitle("AlertDialogExample");
+//                alert.show();
+
+
+            }
+        });
+
+
+
+
+
+
+
+}
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEvent(MessegeEvent event) throws JSONException
     {
@@ -131,6 +176,7 @@ public class MainActivity extends AppCompatActivity
       if(mesage.getString("method").equals("loadgame1"))
 
       {
+          alert.cancel();
             gameID=mesage.getInt("gameID");
 
             Intent intent = new Intent(MainActivity.this, PingPong.class);
@@ -155,6 +201,19 @@ public class MainActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id)
                         {
                             //  Action for 'NO' Button
+
+
+                            JSONObject mesage = new JSONObject();
+                            try {
+                                mesage.put("method", "stopfind");
+                                mesage.put("id", MainActivity.myId);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ws.send(mesage.toString());
+
                             dialog.cancel();
                             Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
                                     Toast.LENGTH_SHORT).show();
