@@ -17,11 +17,11 @@ public class Game {
 
     Game() {
 
-        blocks = new Boolean[24][20];
-        blocksColor = new Color[24][20];
+        blocks = new Boolean[20][10];
+        blocksColor = new Color[20][10];
 
-        for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++) {
                 blocks[i][j] = new Boolean(false);
             }
 
@@ -50,11 +50,12 @@ public class Game {
         score += 100;
 
         for (int i = line; i > 0; i--) {
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < 10; j++) {
                 blocks[i][j] = new Boolean(blocks[i - 1][j]);
             }
         }
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 10; j++)
+        {
             blocks[0][j] = new Boolean(false);
         }
 
@@ -62,7 +63,7 @@ public class Game {
 
     private void placing() {
         for (Coordinate c : currentBrick.coordinates) {
-            if ((c.y + 1) > 23 || blocks[c.y + 1][c.x] == true) {
+            if ((c.y + 1) > 19 || blocks[c.y + 1][c.x] == true) {
                 for (Coordinate cInner : currentBrick.coordinates) {
                     blocks[cInner.y][cInner.x] = true;
                 }
@@ -104,7 +105,7 @@ public class Game {
 
         boolean check = true;
         for (Coordinate c : currentBrick.coordinates) {
-            if ((c.x + 1) >= 20 || blocks[c.y][c.x + 1]) {
+            if ((c.x + 1) >= 10 || blocks[c.y][c.x + 1]) {
                 check = false;
                 break;
             }
@@ -130,7 +131,7 @@ public class Game {
 
         boolean check = true;
         for (Coordinate c : testBrick.coordinates) {
-            if ((c.x) >= 20 || c.x < 0 || blocks[c.y][c.x]) {
+            if ((c.x) >= 10 || c.x < 0 || blocks[c.y][c.x]) {
                 check = false;
                 break;
             }
@@ -142,9 +143,9 @@ public class Game {
 
     public void checkLine() {
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 20; i++) {
             boolean flag = true;
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < 10; j++) {
                 if (!blocks[i][j]) {
                     flag = false;
                     break;

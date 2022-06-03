@@ -11,10 +11,10 @@ public class Brick {
         switch (type) {
             case SQUARE:
                 this.coordinates = new Coordinate[]{
-                        new Coordinate(0, 10),
-                        new Coordinate(1, 10),
-                        new Coordinate(1, 11),
-                        new Coordinate(0, 11)
+                        new Coordinate(0, 5),
+                        new Coordinate(1, 5),
+                        new Coordinate(1, 6),
+                        new Coordinate(0, 6)
                 };
 
                 break;
@@ -22,28 +22,28 @@ public class Brick {
 
             case L_TYPE:
                 this.coordinates = new Coordinate[]{
-                        new Coordinate(0, 11),
-                        new Coordinate(0, 10),
-                        new Coordinate(1, 11),
-                        new Coordinate(2, 11)
+                        new Coordinate(0, 6),
+                        new Coordinate(0, 5),
+                        new Coordinate(1, 6),
+                        new Coordinate(2, 6)
                 };
 
                 break;
             case T_TYPE:
                 this.coordinates = new Coordinate[]{
-                        new Coordinate(1, 10),
-                        new Coordinate(0, 10),
-                        new Coordinate(1, 11),
-                        new Coordinate(2, 10)
+                        new Coordinate(1, 5),
+                        new Coordinate(0, 5),
+                        new Coordinate(1, 6),
+                        new Coordinate(2, 6)
                 };
 
                 break;
             case Z_TYPE:
                 this.coordinates = new Coordinate[]{
-                        new Coordinate(1, 11),
-                        new Coordinate(1, 10),
-                        new Coordinate(0, 10),
-                        new Coordinate(2, 11)
+                        new Coordinate(1, 6),
+                        new Coordinate(1, 5),
+                        new Coordinate(0, 5),
+                        new Coordinate(2, 6)
                 };
 
                 break;
@@ -51,11 +51,11 @@ public class Brick {
             case LINE:
                 this.coordinates = new Coordinate[]{
 
-                        new Coordinate(1, 10),
-                        new Coordinate(0, 10),
+                        new Coordinate(1, 5),
+                        new Coordinate(0, 5),
 
-                        new Coordinate(2, 10),
-                        new Coordinate(3, 10)
+                        new Coordinate(2, 5),
+                        new Coordinate(3, 5)
                 };
 
                 break;

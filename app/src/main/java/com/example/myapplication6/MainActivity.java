@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
 
         Button pong;
-        pong= findViewById(R.id.pongbutton);
+        pong= findViewById(R.id.pongButton);
         pong.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -152,5 +152,5 @@ else if(score1>7){
 
     
     parentPort.postMessage({"method":"gamePongStat",id1,ballX,ballY,curentPosition,enemyPosition,scoreO,score1});
-    parentPort.postMessage({"method":"gamePongStat","id1":id2,"ballX":1080-ballX,"ballY":1920-ballY,"curentPosition":enemyPosition,"enemyPosition":curentPosition,"scoreO":score1,"score1":scoreO});
+    parentPort.postMessage({"method":"gamePongStat","id1":id2,"ballX":1080-ballX,"ballY":1920-ballY,"curentPosition":730-enemyPosition,"enemyPosition":730-curentPosition,"scoreO":score1,"score1":scoreO});
 }
