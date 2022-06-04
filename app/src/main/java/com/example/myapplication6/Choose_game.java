@@ -24,7 +24,7 @@ public class Choose_game extends AppCompatActivity {
     Runnable loop;
     Game gameLogic;
     TextView score;
-    float width;
+    int width;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -36,9 +36,9 @@ public class Choose_game extends AppCompatActivity {
 
 
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
-        float k=Float.valueOf(metrics.widthPixels) /1080;
+        int k=metrics.heightPixels;
         width =metrics.widthPixels ;
-        drawView = new DrawView(this, gameLogic,k);
+        drawView = new DrawView(this, gameLogic,width,k);
 
         score = new TextView(this);
         score.setText(R.string.score);

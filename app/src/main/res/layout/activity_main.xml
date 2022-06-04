@@ -38,10 +38,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
+                    android:layout_weight="180"
                     android:scaleX="1"
                     android:scaleY="1"
-                    android:layout_weight="180"
-                    />
+                    app:srcCompat="@drawable/tetramino" />
 
                 <Button
                     android:id="@+id/button"
@@ -139,14 +139,14 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:id="@+id/smakeimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
+                    android:layout_weight="180"
                     android:scaleX="1"
                     android:scaleY="1"
-                    android:id="@+id/smakeimg"
-                    android:layout_weight="180"
-                    app:srcCompat="@drawable/pongg" />
+                    app:srcCompat="@drawable/snake" />
 
                 <Button
                     android:id="@+id/snakebutton"

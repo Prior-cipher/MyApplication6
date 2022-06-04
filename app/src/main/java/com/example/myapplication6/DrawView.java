@@ -11,24 +11,36 @@ class DrawView extends View
     Paint p;
     int yOffset =200;
     Game game;
-    float k;
-    public DrawView(Context context,Game game,float width)
+    int k;
+    int height;
+    int width;
+    public DrawView(Context context,Game game,int width,int height)
     {
         super(context);
         p = new Paint();
         this.game=game;
-        this.k= width;
+      if((width-80)*2<height-200)
+      {
+         this.k=(height-200)/20;
+      }
+      else {
+          this.k=(width -80)/10;
+      }
+
+        this.height=height;
+      this.width=width;
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas)
+    {
         p.setColor(Color.GRAY);
         p.setStrokeWidth(5f);
-        boundary(canvas);
+        //boundary(canvas);
         grid(canvas);
 
 
-        drawBriks(canvas);
+        //drawBriks(canvas);
         drawBrick(canvas);
 
 
@@ -39,44 +51,32 @@ class DrawView extends View
     {
         p.setStrokeWidth(2f);
 
-        if(k<1){
 
-            for (int i = (int) (90*k); i < 1040; i = (int) (i + 50*k))
+
+            for (int i = 1; i < 11; i +=1)
             {
-                canvas.drawLine(i,  yOffset*k , i, yOffset*k + 895, p);
+                canvas.drawLine(40+k*i,  yOffset ,40+k*i , yOffset +k*20, p);
             }
-        for (int j = (int) (50*k); j < 900; j = (int) (j + 50*k)) {
-            canvas.drawLine(40*k, yOffset*k + j, 1040*k, yOffset*k + j+200, p);
+
+        for (int  n = 0; n < 20; n+=1)
+        {
+            canvas.drawLine((width-k*10) /2, yOffset + n*k, (width-k*10) /2, yOffset + n*k, p);
         }
 
-        }
-        else {
-            for (int i =  (90); i < 1200; i =  (i + 50))
-            {
-                canvas.drawLine(i,  yOffset  , i, yOffset + 1200, p);
-            }
-            for (int j = (50); j < 1200; j = (j + 50)) {
-                canvas.drawLine(40, yOffset*k + j , 1040, yOffset + j, p);
-            }
-        }
+
     }
 
-    private void boundary(Canvas canvas) {
+    private void boundary(Canvas canvas)
+    {
         p.setColor(Color.GRAY);
         p.setStrokeWidth(5f);
-        if(k<1)
-        {
-            canvas.drawLine(40*k, yOffset*k, 40*k, yOffset*k + 1200*k, p);
-            canvas.drawLine(40*k, yOffset*k, 1040*k, yOffset*k, p);
-            canvas.drawLine(1040*k, yOffset*k, 1040*k, yOffset*k + 1200*k, p);
-            canvas.drawLine(1040*k, yOffset*k + 1200*k, 40*k, yOffset*k + 1200*k, p);
-        }
-        else {
-            canvas.drawLine(40, yOffset, 40, yOffset + 1200, p);
+
+            canvas.drawLine(40, yOffset, 40, yOffset + k, p);
             canvas.drawLine(40, yOffset, 1040, yOffset, p);
-            canvas.drawLine(1040, yOffset, 1040, yOffset + 1200, p);
-            canvas.drawLine(1040, yOffset + 1200, 40, yOffset + 1200, p);
-        }
+            canvas.drawLine(k-40, yOffset, k-40, yOffset + k, p);
+            canvas.drawLine(k-40, yOffset + k, 40, yOffset + k, p);
+
+
     }
 
 
@@ -106,7 +106,7 @@ class DrawView extends View
                 if(game.blocks[i][j])
                 {
                     p.setColor(Color.BLUE);
-                    canvas.drawRect(42*k + j * 50*k, yOffset*k + i * 50*k + 2, 88*k + j * 50*k, yOffset*k + (i + 1) * 50*k - 2, p);
+                    canvas.drawRect(41 + j * (k-40)/10, yOffset + i * (k-40)/10 + 2, 88*k + j * 50, yOffset + (i + 1) * 50 - 2, p);
                 }
             }
         }

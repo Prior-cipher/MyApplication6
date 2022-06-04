@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
 
                 //Setting the title manually
 
-                alert.setTitle("AlertDialogExample");
+
                 alert.show();
                 ws.send(mesage.toString());
 
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
                 //Setting the title manually
 
-                alert.setTitle("AlertDialogExample");
+
                 alert.show();
                 ws.send(mesage.toString());
 
@@ -272,6 +272,7 @@ public class MainActivity extends AppCompatActivity
         public myDialog(Context context)
         {
             super(context);
+            this.setTitle("Поиск игры");
             this.setMessage("Вы хотите выйти из очереди в игру ?")
 
 
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity
         public myDialog2(Context context)
         {
             super(context);
+            this.setTitle("Поиск игры");
             this.setMessage("Вы хотите выйти из очереди в игру ?")
 
 
