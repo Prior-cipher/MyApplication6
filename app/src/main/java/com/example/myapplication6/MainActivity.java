@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity
 
 
                 alert.show();
+
                 ws.send(mesage.toString());
             }
         });
