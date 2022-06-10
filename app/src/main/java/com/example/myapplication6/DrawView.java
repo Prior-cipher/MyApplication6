@@ -28,7 +28,7 @@ class DrawView extends View
         this.game=game;
       if((width-80)*2<height-200)
       {
-          this.k=(width -80)/10;
+          this.k=(width -80)/20;
       }
       else {
           this.k=(height -200)/20;
@@ -46,7 +46,7 @@ class DrawView extends View
         boundary(canvas);
         grid(canvas);
 
-        //drabPred(canvas);
+        drabPred(canvas);
         drawBriks(canvas);
         drawBrick(canvas);
         drawScore(canvas);

@@ -47,7 +47,7 @@ else
 }
   
 }
-let timerId = setInterval(takt,1000);
+let timerId = setInterval(takt,50);
 
 class Bricks{
     constructor(x,y)

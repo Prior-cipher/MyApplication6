@@ -49,7 +49,7 @@ public class Snake  extends AppCompatActivity
 
         float k=Float.valueOf(metrics.widthPixels) /1080;
 
-        drawView = new SnakeView(this, gameLogic,k);
+        drawView = new SnakeView(this, gameLogic,metrics.widthPixels,metrics.heightPixels);
 
 
 
@@ -77,7 +77,7 @@ public class Snake  extends AppCompatActivity
         game.addView(drawView);
         game.addView(score);
         setContentView(game);
-        score.setText("1");
+        score.setText("0");
 
 
 
@@ -212,6 +212,7 @@ public class Snake  extends AppCompatActivity
 
             }
             gameLogic.zmey1=list1;
+            score.setText(userJson.getString("score1"));
             gameLogic.h[0] = userJson.getJSONArray("h").getInt(0);
             gameLogic.h[1] = userJson.getJSONArray("h").getInt(1);
             drawView.invalidate();
@@ -223,10 +224,10 @@ public class Snake  extends AppCompatActivity
             if(userJson.getBoolean("win1"))
             {
 
-                s= String.format("Игра оконченна вы вйграли ваш счет = %d", 1000);
+                s= String.format("Игра оконченна вы вйграли ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
             }
             else {
-                s= String.format("Игра оконченна вы програли ваш счет = %d", 1000);
+                s= String.format("Игра оконченна вы програли ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
             }
             Snake.winDialog builder = new Snake.winDialog(this,s);
             AlertDialog alert = builder.create();
@@ -242,7 +243,7 @@ public class Snake  extends AppCompatActivity
             flag=false;
 
 
-            s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", 1000);
+            s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
 
 
             Snake.winDialog builder = new Snake.winDialog(this,s);

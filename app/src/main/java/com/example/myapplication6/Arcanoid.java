@@ -358,7 +358,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
             String s="";
 
 
-                s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", this.pl.scoreO*1000);
+                s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", this.pl.scoreO);
 
 
             winDialog builderr = new winDialog(this,s);

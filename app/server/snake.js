@@ -7,10 +7,10 @@ let id2=workerData.clientId2;
 
 let score0=0;
 
-let score1= workerData.score1;
+let score1= 0;
  let h = [];
- let zmey = [[5, 0], [6, 0]];
- let zmey1 = [[8, 0], [9, 0]];
+ let zmey = [[9, 0], [10, 0]];
+ let zmey1 = [[9, 19], [10, 19]];
 
  let direction = "top";
  let direction1 = "top";
@@ -266,6 +266,7 @@ let score1= workerData.score1;
 
 
             zmey.push([h[0],h[1]]);
+            score0+=1000;
 
             h = setFood();
 
@@ -275,7 +276,7 @@ let score1= workerData.score1;
 
 
             zmey1.push([h[0],h[1]]);
-
+            score1+=1000;
             h = setFood();
 
         }
@@ -283,16 +284,16 @@ let score1= workerData.score1;
         {
                     status1=false;
                     clearInterval(t);
-                    parentPort.postMessage({"method":"endgame2",id1,id2,score0,"win1":true}) ;
-                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score0,"win1":false}) ;
+                    parentPort.postMessage({"method":"endgame2",id1,id2,"score1":score0,"win1":true}) ;
+                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score1,"win1":false}) ;
                     process.exit(1);
         }
         else if(chkImpact1())
         {
                     status1=false;
                     clearInterval(t);
-                    parentPort.postMessage({"method":"endgame2",id1,id2,score0,"win1":false}) ;
-                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score0,"win1":true}) ;
+                    parentPort.postMessage({"method":"endgame2",id1,id2,"score1":score0,"win1":false}) ;
+                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score1,"win1":true}) ;
                     process.exit(1);
         }
       
@@ -303,8 +304,8 @@ let score1= workerData.score1;
                 {
                     status1=false;
                     clearInterval(t);
-                    parentPort.postMessage({"method":"endgame2",id1,id2,score0,"win1":false}) ;
-                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score0,"win1":true}) ;
+                    parentPort.postMessage({"method":"endgame2",id1,id2,"score1":score0,"win1":false}) ;
+                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score1,"win1":true}) ;
                     process.exit(1);
                    
                    
@@ -315,8 +316,8 @@ let score1= workerData.score1;
                     status1=false;
                     clearInterval(t);
 
-                    parentPort.postMessage({"method":"endgame2",id1,id2,score0,"win1":true}) ;
-                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score0,"win1":false}) ;
+                    parentPort.postMessage({"method":"endgame2",id1,id2,"score1":score0,"win1":true}) ;
+                    parentPort.postMessage({"method":"endgame2","id1":id2,"id2":id1,score1,"win1":false}) ;
                     process.exit(1);
                    
                    
@@ -388,7 +389,7 @@ let score1= workerData.score1;
             process.exit(1);
         }
         parentPort.postMessage({"method":"gameSnakeStat",id1,zmey,zmey1,score1,h});
-        parentPort.postMessage({"method":"gameSnakeStat","id1":id2,zmey,zmey1,score1,h});
+        parentPort.postMessage({"method":"gameSnakeStat","id1":id2,"zmey":zmey1,"zmey1":zmey,score1,h});
 
     }
 
@@ -490,19 +491,19 @@ let score1= workerData.score1;
         {
             if(turLeft1)
             {
-                switch (direction)
+                switch (direction1)
                 {
                     case "top":
-                        direction="left";
+                        direction1="left";
                         break;
                     case "down":
-                        direction="right";
+                        direction1="right";
                         break;
                     case "left":
-                        direction="down";
+                        direction1="down";
                         break;
                     case "right":
-                        direction="top";
+                        direction1="top";
                         break;
                     default:
                         break;
