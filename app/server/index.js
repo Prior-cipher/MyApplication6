@@ -14,14 +14,22 @@ let clientsAuth ={};
 const games1 = [];
 const games2 = [];
 const games3 = [];
+const games4 = [];
+
 let currentGame1={};
 let currentGame2={};
 let currentGame3={};
+let currentGame4={};
+
 let bclist={};
 let bclist2={};
 let bclist3={};
+let bclist4={};
+
 let game1i=0;
 let game2i=0;
+let game3i=0;
+let game4i=0;
 let i=0;
 
 
@@ -48,7 +56,8 @@ wsServer.on("request", request =>
        
        let stidgames1=games1.indexOf(st);
        let stidgames2=games2.indexOf(st);
-
+       let stidgames3=games3.indexOf(st);
+       let stidgames4=games4.indexOf(st);
       if(stidgames1!=-1)
       {
         games1.splice(stidgames1,1)
@@ -94,8 +103,53 @@ wsServer.on("request", request =>
       
          delete currentGame2.k1;
       }
-      
 
+      if(stidgames3!=-1)
+      {
+        games3.splice(stidgames3,1);
+        }
+        let k2;
+        for (const [key, value] of Object.entries(currentGame3)) 
+        {
+         if(value.id1==st )
+         {
+             //sendwin
+             value.worker.terminate();
+             clients[value.id2].send(JSON.stringify({"method":"surender3"}));
+             k=key;
+         }
+         else if(value.id2==st)
+         {
+             value.worker.terminate();
+             clients[value.id1].send(JSON.stringify({"method":"surender3"}));
+             k1=key;
+         }
+      
+         delete currentGame3.k2;
+      }
+      if(stidgames4!=-1)
+      {
+        games4.splice(stidgames4,1);
+        }
+        
+        for (const [key, value] of Object.entries(currentGame4)) 
+        {
+         if(value.id1==st )
+         {
+             //sendwin
+             value.worker.terminate();
+             clients[value.id2].send(JSON.stringify({"method":"surender4"}));
+             k=key;
+         }
+         else if(value.id2==st)
+         {
+             value.worker.terminate();
+             clients[value.id1].send(JSON.stringify({"method":"surender4"}));
+             k1=key;
+         }
+      
+         delete currentGame4.k2;
+      }
     
 
 
@@ -120,35 +174,6 @@ wsServer.on("request", request =>
         console.log(result.method);
         //I have received a message from the client
         //a user want to create a new game
-       if (result.method === "surender2") 
-        {
-            try {
-                currentGame2[result.gameID].worker.terminate();
-                if(result.id== currentGame2[result.gameID].id1)
-                {
-                    //sendwin
-                    clients[currentGame2[result.gameID].id2].send(JSON.stringify({"method":"surender2"}));
-                    
-                   
-                }
-                else if(result.id== currentGame2[result.gameID].id2)
-                {
-                   
-                    clients[currentGame2[result.gameID].id1].send(JSON.stringify({"method":"surender2"}));
-                   
-                   }
-                   
-                   delete currentGame1.k;
-                   delete clients.st;
-                   
-            } catch (error) 
-            {
-                
-            }
-            return;
-           
-       }
-        
         if (result.method === "surender1") 
         {
 
@@ -175,6 +200,92 @@ wsServer.on("request", request =>
                 delete clients.st;
                 return;
         }
+       if (result.method === "surender2") 
+        {
+            try {
+                currentGame2[result.gameID].worker.terminate();
+                if(result.id== currentGame2[result.gameID].id1)
+                {
+                    //sendwin
+                    clients[currentGame2[result.gameID].id2].send(JSON.stringify({"method":"surender2"}));
+                    
+                   
+                }
+                else if(result.id== currentGame2[result.gameID].id2)
+                {
+                   
+                    clients[currentGame2[result.gameID].id1].send(JSON.stringify({"method":"surender2"}));
+                   
+                   }
+                   
+                   delete currentGame2.k;
+                   delete clients.st;
+                   
+            } catch (error) 
+            {
+                
+            }
+            return;
+           
+       }
+       if (result.method === "surender3") 
+       {
+           try {
+               currentGame3[result.gameID].worker.terminate();
+               if(result.id== currentGame3[result.gameID].id1)
+               {
+                   //sendwin
+                   clients[currentGame3[result.gameID].id2].send(JSON.stringify({"method":"surender3"}));
+                   
+                  
+               }
+               else if(result.id== currentGame3[result.gameID].id2)
+               {
+                  
+                   clients[currentGame3[result.gameID].id1].send(JSON.stringify({"method":"surender3"}));
+                  
+                  }
+                  
+                  delete currentGame3.k;
+                  delete clients.st;
+                  
+           } catch (error) 
+           {
+               
+           }
+           return;
+          
+      }
+      if (result.method === "surender4") 
+      {
+          try {
+              currentGame4[result.gameID].worker.terminate();
+              if(result.id== currentGame4[result.gameID].id1)
+              {
+                  //sendwin
+                  clients[currentGame4[result.gameID].id2].send(JSON.stringify({"method":"surender4"}));
+                  
+                 
+              }
+              else if(result.id== currentGame4[result.gameID].id2)
+              {
+                 
+                  clients[currentGame4[result.gameID].id1].send(JSON.stringify({"method":"surender4"}));
+                 
+                 }
+                 
+                 delete currentGame4.k;
+                 delete clients.st;
+                 
+          } catch (error) 
+          {
+              
+          }
+          return;
+         
+     }
+       
+        
        
     
   
@@ -188,6 +299,18 @@ wsServer.on("request", request =>
             games2.splice(games2.indexOf(result.id),1);
             return;
         } 
+        if (result.method === "stopfind3") 
+        {
+            games3.splice(games3.indexOf(result.id),1);
+            return;
+        } 
+
+        if (result.method === "stopfind4") 
+        {
+            games4.splice(games4.indexOf(result.id),1);
+            return;
+        } 
+
         if (result.method === "iwantgame1") 
         { 
             games1.push(result.clientId);
@@ -205,7 +328,22 @@ wsServer.on("request", request =>
            
         } 
      
+        if (result.method === "iwantgame3") 
+        { 
+            games3.push(result.clientId);
+           
 
+            return;
+           
+        }
+        if (result.method === "iwantgame4") 
+        { 
+            games4.push(result.clientId);
+           
+
+            return;
+           
+        }
         if (result.method === "gamePongInfo") 
         {
           
@@ -232,7 +370,32 @@ try {
          return;
          
         }
-
+        if (result.method === "gameTetrisCommand") 
+        {
+          
+            console.log("recive:" +JSON.stringify(result))
+try {
+    bclist3[result.gameID].postMessage(result);
+} catch (error) {
+    
+}
+        
+         return;
+         
+        }
+        if (result.method === "gameArcStat") 
+        {
+          
+            console.log("recive:" +JSON.stringify(result))
+try {
+    bclist4[result.gameID].postMessage(result);
+} catch (error) {
+    
+}
+        
+         return;
+         
+        }
 
   
  
@@ -363,7 +526,112 @@ if(games1.length>=2)
                game2i++;
                games2.splice(0,2);
     }  
+    if(games3.length>=2)
+    {
+        clients[games3[0]].send(JSON.stringify({"method":"loadgame3","gameID":game3i}));
+        clients[games3[1]].send(JSON.stringify({"method":"loadgame3","gameID":game3i}));
+        // wsServer.connections[games1[0]].send(JSON.stringify({"method":"loadgame1","gameID":game1i}));
+        // wsServer.connections[games1[1]].send(JSON.stringify({"method":"loadgame1","gameID":game1i}));
         
+        bclist3 [game3i] = new BroadcastChannel('game3'+game3i);
+        let worker3 = new Worker("./tetris.js", {workerData: {clientId1:games3[0],clientId2:games3[1],"name":bclist3[game3i].name}});
+        //let worker = new Worker("./snake.js", {workerData: {clientId1:games2[0],clientId2:games2[0],"name":bclist2[game2i].name}});
+        
+       
+    
+        worker3.on("message", result => 
+          {
+            console.log("isend:" +JSON.stringify(result))
+            if(result.method=="gameTetrisInfo")
+            {
+                
+              try {
+                
+                clients[ result.id].send(JSON.stringify(result));
+               } catch (error) 
+              {
+                  
+              }
+                
+               
+            }
+            else if(result.method=="endgame3")
+            {
+                clients[ result.id].send(JSON.stringify(result));
+                
+            }
+            
+        });
+    
+          worker3.on("error", error => {
+              console.log(error);
+          });
+    
+        worker3.on("exit", exitCode =>
+         {
+              console.log(`It exited with code ${exitCode}`);
+              });
+             
+      
+            currentGame3[game3i]={id1:games3[0],id2:games3[1],"worker":worker3};
+
+                   game3i++;
+                   games3.splice(0,2);
+        }  
+
+
+        if(games4.length>=2)
+        {
+            clients[games4[0]].send(JSON.stringify({"method":"loadgame4","gameID":game4i}));
+            clients[games4[1]].send(JSON.stringify({"method":"loadgame4","gameID":game4i}));
+            // wsServer.connections[games1[0]].send(JSON.stringify({"method":"loadgame1","gameID":game1i}));
+            // wsServer.connections[games1[1]].send(JSON.stringify({"method":"loadgame1","gameID":game1i}));
+            
+            bclist4 [game4i] = new BroadcastChannel('game4'+game4i);
+            let worker4 = new Worker("./arcanoid.js", {workerData: {clientId1:games4[0],clientId2:games4[1],"name":bclist4[game4i].name}});
+            //let worker = new Worker("./snake.js", {workerData: {clientId1:games2[0],clientId2:games2[0],"name":bclist2[game2i].name}});
+            
+           
+        
+            worker4.on("message", result => 
+              {
+                console.log("isend:" +JSON.stringify(result))
+                if(result.method=="gameArcStat")
+                {
+                    
+                  try {
+                    
+                    clients[ result.id].send(JSON.stringify(result));
+                   } catch (error) 
+                  {
+                      
+                  }
+                    
+                   
+                }
+                else if(result.method=="endgame4")
+                {
+                    clients[ result.id].send(JSON.stringify(result));
+                    
+                }
+                
+            });
+        
+            worker4.on("error", error => {
+                  console.log(error);
+              });
+        
+              worker4.on("exit", exitCode =>
+             {
+                  console.log(`It exited with code ${exitCode}`);
+                  });
+                 
+          
+                currentGame4[game4i]={id1:games4[0],id2:games4[1],"worker":worker4};
+    
+                       game4i++;
+                       games4.splice(0,2);
+            } 
         
     
 }  

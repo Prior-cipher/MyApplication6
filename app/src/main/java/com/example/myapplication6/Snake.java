@@ -262,19 +262,11 @@ public class Snake  extends AppCompatActivity
         public winDialog(Context context, String text)
         {
             super(context);
-
-
-
             EventBus.getDefault().unregister(this);
             this.setMessage(text)
-
-
                     .setNegativeButton("Вернутся в меню", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id)
                         {
-
-                            //  Action for 'NO' Button
-
                             dialog.cancel();
                             Snake.super.onBackPressed();
                             Toast.makeText(getApplicationContext(),"you choose no action for alertbox",

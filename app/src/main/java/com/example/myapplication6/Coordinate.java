@@ -1,8 +1,13 @@
 package com.example.myapplication6;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Coordinate {
     int y, x;
-    Coordinate(int y, int x) {
+    public Coordinate(int y, int x)
+    {
         this.y = y;
         this.x = x;
 

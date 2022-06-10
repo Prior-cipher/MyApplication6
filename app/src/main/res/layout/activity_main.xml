@@ -26,11 +26,11 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="@dimen/cardview_default_radius"
                 android:layout_weight="1"
-                android:weightSum="200"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="200">
 
                 <ImageView
                     android:id="@+id/tetrisimg"
@@ -46,84 +46,11 @@
                 <Button
                     android:id="@+id/button"
 
-                    android:layout_weight="20"
                     android:layout_width="match_parent"
-
-
                     android:layout_height="40dp"
-
-                    android:text="Tetris"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="@dimen/cardview_default_radius"
-                android:layout_weight="1"
-                android:weightSum="200"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/pongimg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:scaleX="1"
-                    android:scaleY="1"
-                    android:layout_weight="180"
-                    app:srcCompat="@drawable/pongg" />
-
-                <Button
-                    android:id="@+id/pongButton"
 
 
                     android:layout_weight="20"
-                    android:layout_width="match_parent"
-
-
-                    android:layout_height="40dp"
-
-                    android:text="Pong"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
-        </TableRow>
-
-         <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="2">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="@dimen/cardview_default_radius"
-                android:layout_weight="1"
-                android:weightSum="200"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/arcanoidimg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:scaleX="1"
-                    android:scaleY="1"
-                    android:layout_weight="180"
-
-                    app:srcCompat="@drawable/tetramino" />
-
-                <Button
-                    android:id="@+id/arcbutton"
-
-                    android:layout_weight="20"
-                    android:layout_width="match_parent"
-
-
-                    android:layout_height="40dp"
 
                     android:text="Tetris"
                     android:textColor="@android:color/black" />
@@ -135,8 +62,81 @@
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/cardview_default_radius"
                 android:layout_weight="1"
-                android:weightSum="200"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="200">
+
+                <ImageView
+                    android:id="@+id/pongimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="180"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    app:srcCompat="@drawable/pongg" />
+
+                <Button
+                    android:id="@+id/pongButton"
+
+
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+
+                    android:layout_weight="20"
+
+                    android:text="Pong"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/cardview_default_radius"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="200">
+
+                <ImageView
+                    android:id="@+id/arcanoidimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="180"
+                    android:scaleX="1"
+                    android:scaleY="1"
+
+                    app:srcCompat="@drawable/arcanboid" />
+
+                <Button
+                    android:id="@+id/arcbutton"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+
+                    android:layout_weight="20"
+
+                    android:text="Arcanoid"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/cardview_default_radius"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="200">
 
                 <ImageView
                     android:id="@+id/smakeimg"
@@ -146,19 +146,19 @@
                     android:layout_weight="180"
                     android:scaleX="1"
                     android:scaleY="1"
-                    app:srcCompat="@drawable/snake" />
+                    app:srcCompat="@drawable/arcanboid" />
 
                 <Button
                     android:id="@+id/snakebutton"
 
 
-                    android:layout_weight="20"
                     android:layout_width="match_parent"
-
-
                     android:layout_height="40dp"
 
-                    android:text="Pong"
+
+                    android:layout_weight="20"
+
+                    android:text="Snake"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>

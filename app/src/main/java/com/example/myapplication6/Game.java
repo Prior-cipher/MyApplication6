@@ -7,157 +7,25 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Arrays;
 
-public class Game {
+public class Game
+{
 
     Boolean[][] blocks;
-    Color blocksColor[][];
+    String blocksColor[][];
     Brick currentBrick;
-    BrickType nextBrick;
+    Brick nextBrick;
     int score = 0;
-
-    Game() {
-
-        blocks = new Boolean[20][10];
-        blocksColor = new Color[20][10];
-
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                blocks[i][j] = new Boolean(false);
-            }
-
-
-        }
-
-        if (nextBrick == null) {
-
-            nextBrick = BrickType.getRandomBrick();
-            currentBrick = new Brick(nextBrick);
-            nextBrick = BrickType.getRandomBrick();
-        }
-
-
-    }
-
-    public void takt() {
-        placing();
-        currentBrick.Down();
-    }
-
-
-    private void downingBlock(int line) {
-
-
-        score += 100;
-
-        for (int i = line; i > 0; i--) {
-            for (int j = 0; j < 10; j++) {
-                blocks[i][j] = new Boolean(blocks[i - 1][j]);
-            }
-        }
-        for (int j = 0; j < 10; j++)
-        {
-            blocks[0][j] = new Boolean(false);
-        }
-
-    }
-
-    private void placing() {
-        for (Coordinate c : currentBrick.coordinates) {
-            if ((c.y + 1) > 19 || blocks[c.y + 1][c.x] == true) {
-                for (Coordinate cInner : currentBrick.coordinates) {
-                    blocks[cInner.y][cInner.x] = true;
-                }
-                checkLine();
-                nextBrick();
-
-                break;
-            }
-        }
-    }
-
-    private void nextBrick() {
-        this.currentBrick = new Brick(nextBrick);
-        this.nextBrick = BrickType.getRandomBrick();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-
-    public void checkMoveLeft()
-    {
-        boolean check = true;
-        for (Coordinate c : currentBrick.coordinates) {
-            if (c.x - 1 < 0 || blocks[c.y][c.x - 1]) {
-                check = false;
-                break;
-            }
-        }
-
-        if (check) {
-            currentBrick.MoveLeft();
-        }
-
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void checkMoveRight()
+    int score1 = 0;
+    Game()
     {
 
-        boolean check = true;
-        for (Coordinate c : currentBrick.coordinates) {
-            if ((c.x + 1) >= 10 || blocks[c.y][c.x + 1]) {
-                check = false;
-                break;
-            }
-        }
-
-        if (check) {
-            currentBrick.MoveRight();
-
-        }
-
+        this.blocksColor= new String[][]{};
+        this.currentBrick= new Brick();
+        this.nextBrick= new Brick();
+        this.blocks=new Boolean[][]{};
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void checkRotation() {
 
-
-        Brick testBrick = new Brick(currentBrick.type);
-        for (int i = 0; i < 4; i++) {
-            testBrick.coordinates[i].y = currentBrick.coordinates[i].y;
-            testBrick.coordinates[i].x = currentBrick.coordinates[i].x;
-        }
-        testBrick.Rotate();
-
-        boolean check = true;
-        for (Coordinate c : testBrick.coordinates) {
-            if ((c.x) >= 10 || c.x < 0 || blocks[c.y][c.x]) {
-                check = false;
-                break;
-            }
-        }
-        if (check) {
-            currentBrick.Rotate();
-        }
-    }
-
-    public void checkLine() {
-
-        for (int i = 0; i < 20; i++) {
-            boolean flag = true;
-            for (int j = 0; j < 10; j++) {
-                if (!blocks[i][j]) {
-                    flag = false;
-                    break;
-                }
-            }
-
-            if (flag) {
-                downingBlock(i);
-            }
-        }
-
-    }
 
 
 }

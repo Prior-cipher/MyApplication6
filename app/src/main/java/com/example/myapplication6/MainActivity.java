@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     Handler mHandler = new Handler();
     myDialog builder;
     myDialog2 builder2;
+    myDialog3 builder3;
+    myDialog4 builder4;
     public  static  int myId=-1;
     public  static  int gameID=-1;
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity
 
         builder = new myDialog(this);
         builder2 = new myDialog2(this);
+        builder3 = new myDialog3(this);
+        builder4 = new myDialog4(this);
        snake= (Button) findViewById(R.id.snakebutton);
 
 
@@ -193,10 +197,23 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, Choose_game.class);
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame3");
+                    mesage.put("clientId", MainActivity.myId);
 
 
-                startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                alert = builder3.create();
+
+
+
+
+                alert.show();
+                ws.send(mesage.toString());
             }
         });
         ImageView tetrisimg;
@@ -206,13 +223,80 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, Choose_game.class);
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame3");
+                    mesage.put("clientId", MainActivity.myId);
 
 
-                startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                alert = builder3.create();
+
+
+
+
+                alert.show();
+                ws.send(mesage.toString());
             }
         });
 
+        Button arcanoidButton;
+        arcanoidButton=findViewById(R.id.arcbutton);
+        arcanoidButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame4");
+                    mesage.put("clientId", MainActivity.myId);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                alert = builder4.create();
+
+
+
+
+                alert.show();
+                ws.send(mesage.toString());
+            }
+        });
+
+
+        ImageView arcanoidimg;
+        arcanoidimg= findViewById(R.id.arcanoidimg);
+        arcanoidimg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                JSONObject mesage = new JSONObject();
+                try {
+                    mesage.put("method", "iwantgame4");
+                    mesage.put("clientId", MainActivity.myId);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                alert = builder4.create();
+
+
+
+
+                alert.show();
+                ws.send(mesage.toString());
+            }
+        });
 
 
     }
@@ -249,19 +333,30 @@ public class MainActivity extends AppCompatActivity
 
             startActivity(intent);
         }
-        if(mesage.getString("method").equals("gameSnakeStat"))
+        if(mesage.getString("method").equals("loadgame3"))
 
         {
-            ArrayList<int[]> list = new ArrayList<>();
+            alert.cancel();
+            gameID=mesage.getInt("gameID");
+
+            Intent intent = new Intent(MainActivity.this, Choose_game.class);
 
 
-
-            for(int i=0; i< mesage.getJSONArray("zmey").length(); i++)
-            {
-                list.add(new int[]{mesage.getJSONArray("zmey").getJSONArray(i).getInt(0),mesage.getJSONArray("zmey").getJSONArray(i).getInt(1)});
-
-            }
+            startActivity(intent);
         }
+
+        if(mesage.getString("method").equals("loadgame4"))
+
+        {
+            alert.cancel();
+            gameID=mesage.getInt("gameID");
+
+            Intent intent = new Intent(MainActivity.this, Arcanoid.class);
+
+
+            startActivity(intent);
+        }
+
 
 
         Log.w("",event.message);
@@ -322,6 +417,79 @@ public class MainActivity extends AppCompatActivity
                             JSONObject mesage = new JSONObject();
                             try {
                                 mesage.put("method", "stopfind2");
+                                mesage.put("id", MainActivity.myId);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ws.send(mesage.toString());
+
+                            dialog.cancel();
+                            Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+    }
+
+    class myDialog3 extends AlertDialog.Builder
+    {
+
+        public myDialog3(Context context)
+        {
+            super(context);
+            this.setTitle("Поиск игры");
+            this.setMessage("Вы хотите выйти из очереди в игру ?")
+
+
+                    .setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            //  Action for 'NO' Button
+
+
+                            JSONObject mesage = new JSONObject();
+                            try {
+                                mesage.put("method", "stopfind3");
+                                mesage.put("id", MainActivity.myId);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ws.send(mesage.toString());
+
+                            dialog.cancel();
+                            Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+    }
+
+
+    class myDialog4 extends AlertDialog.Builder
+    {
+
+        public myDialog4(Context context)
+        {
+            super(context);
+            this.setTitle("Поиск игры");
+            this.setMessage("Вы хотите выйти из очереди в игру ?")
+
+
+                    .setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            //  Action for 'NO' Button
+
+
+                            JSONObject mesage = new JSONObject();
+                            try {
+                                mesage.put("method", "stopfind4");
                                 mesage.put("id", MainActivity.myId);
 
 

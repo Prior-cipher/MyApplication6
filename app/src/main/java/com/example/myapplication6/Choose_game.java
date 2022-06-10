@@ -1,26 +1,39 @@
 package com.example.myapplication6;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.lang.reflect.Type;
 
 public class Choose_game extends AppCompatActivity {
 
 
     DrawView drawView;
-
+    Boolean flag= true;
     FrameLayout game;
-    Prediction pred;
+
     Runnable loop;
     Game gameLogic;
     TextView score;
@@ -40,51 +53,36 @@ public class Choose_game extends AppCompatActivity {
         width =metrics.widthPixels ;
         drawView = new DrawView(this, gameLogic,width,k);
 
-        score = new TextView(this);
-        score.setText(R.string.score);
-        score.setId(R.id.score1);
-        score.setTextSize(30);
 
 
-        RelativeLayout.LayoutParams scoretext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
 
-        scoretext.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        scoretext.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 
 
-        score.setLayoutParams(scoretext);
-
-
-        pred = new Prediction(this, gameLogic);
-
-        game.addView(pred);
         game.addView(drawView);
-        game.addView(score);
+
         setContentView(game);
-        score.setText("1");
-
-
-        Handler handler = new Handler();
 
 
 
-        loop = new Runnable() {
-            public void run() {
 
 
-                gameLogic.takt();
-                pred.invalidate();
-                score.setText(String.valueOf(gameLogic.score));
-                drawView.invalidate();
 
 
-                handler.postDelayed(this, 500);
 
 
-            }
-        };
-        loop.run();
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -103,22 +101,182 @@ public class Choose_game extends AppCompatActivity {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            JSONObject mesage = new JSONObject();
             if (x < width / 3) {
-                gameLogic.checkMoveLeft();
-                drawView.invalidate();
+                try {
+                    mesage.put("method", "gameTetrisCommand");
+                    mesage.put("id", MainActivity.myId);
+                    mesage.put("command", "turnLeft");
+                    mesage.put("gameID", MainActivity.gameID);
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                MainActivity.ws.send(mesage.toString());
+
             } else if (x < width / 3 * 2) {
-                gameLogic.checkRotation();
-                drawView.invalidate();
+                try {
+                    mesage.put("method", "gameTetrisCommand");
+                    mesage.put("id", MainActivity.myId);
+                    mesage.put("command", "rotate");
+                    mesage.put("gameID", MainActivity.gameID);
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                MainActivity.ws.send(mesage.toString());
             } else {
 
-                gameLogic.checkMoveRight();
-                drawView.invalidate();
+                try {
+                    mesage.put("method", "gameTetrisCommand");
+                    mesage.put("id", MainActivity.myId);
+                    mesage.put("command", "turnRight");
+                    mesage.put("gameID", MainActivity.gameID);
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                MainActivity.ws.send(mesage.toString());
             }
 
 
         }
         return false;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessegeEvent event) throws JSONException
+    {
+        String s;
+        JSONObject userJson = new JSONObject(event.message);
+
+        if(userJson.getString("method").equals("gameTetrisInfo"))
+        {
+
+
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+
+
+              s =userJson.getJSONObject("currentBrick").getString("coordinates");
+
+
+            gameLogic.currentBrick.coordinates=gson.fromJson(s,Coordinate[].class);
+
+            s=userJson.getJSONObject("currentBrick").getString("color");
+
+            gameLogic.currentBrick.color= s;
+
+            s =userJson.getJSONObject("nextBrick").getString("coordinates");
+
+            gameLogic.nextBrick.coordinates=gson.fromJson(s,Coordinate[].class);
+            s =userJson.getString("blocks");
+            gameLogic.blocks=gson.fromJson(s,Boolean[][].class);
+
+            s =userJson.getString("blocksColor");
+            gameLogic.blocksColor=gson.fromJson(s,String[][].class);
+            gameLogic.score=userJson.getInt("score0");
+            gameLogic.score1=userJson.getInt("score1");
+            drawView.invalidate();
+        }
+        else if(userJson.getString("method").equals("endgame3"))
+        {
+            flag=false;
+
+            if(userJson.getBoolean("win1"))
+            {
+
+                s= String.format("Игра оконченна вы вйграли ваш счет = %d", 1000);
+            }
+            else {
+                s= String.format("Игра оконченна вы програли ваш счет = %d", 1000);
+            }
+            Choose_game.winDialog builder = new Choose_game.winDialog(this,s);
+            AlertDialog alert = builder.create();
+            alert.onBackPressed();
+            //Setting the title manually
+
+            alert.setTitle("Сообщение от сервера");
+            alert.show();
+
+
+
+
+        }
+        else if(userJson.getString("method").equals("surender3"))
+        {
+
+            flag=false;
+
+
+            s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", 1000);
+
+
+            Choose_game.winDialog builder = new Choose_game.winDialog(this,s);
+            AlertDialog alert = builder.create();
+            alert.onBackPressed();
+            //Setting the title manually
+
+            alert.setTitle("Сообщение от сервера");
+            alert.show();
+
+        }
+
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Override
+    protected void onDestroy()
+    {
+        if(flag) {
+
+            JSONObject mesage = new JSONObject();
+            try {
+                mesage.put("method", "surender3");
+                mesage.put("id", MainActivity.myId);
+
+
+                mesage.put("gameID", MainActivity.gameID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            MainActivity.ws.send(mesage.toString());
+
+        }
+
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
+    class winDialog extends AlertDialog.Builder
+    {
+
+        public winDialog(Context context, String text)
+        {
+            super(context);
+            EventBus.getDefault().unregister(this);
+            this.setMessage(text)
+                    .setNegativeButton("Вернутся в меню", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            dialog.cancel();
+                            Choose_game.super.onBackPressed();
+                            Toast.makeText(getApplicationContext(),"you choose no action for alertbox",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
     }
 }
 
