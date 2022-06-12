@@ -110,6 +110,7 @@ function takt()
     if(ballX>=enemyPosition &&ballX<=enemyPosition+350 &&ballY<=50)
     {
         ballY=51;
+        ballXxpeed+=enemySpeed;
         ballYSpeed=-ballYSpeed;
     }
     else if(ballY<0)

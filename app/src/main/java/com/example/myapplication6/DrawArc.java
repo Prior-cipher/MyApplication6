@@ -36,7 +36,8 @@ public class DrawArc extends View
         kx=1080;
         this.kx= Double.valueOf(wight)/kx;;
         this.ky= Double.valueOf(height)/ky;;
-
+//        kx=1;
+//        ky=1;
         this.height= height;
 
     }
