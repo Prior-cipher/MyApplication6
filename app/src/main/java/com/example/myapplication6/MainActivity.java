@@ -1,5 +1,6 @@
 package com.example.myapplication6;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,10 +43,13 @@ public class MainActivity extends AppCompatActivity
 
     AlertDialog alert;
     Handler mHandler = new Handler();
+    Handler mHandler2;
     myDialog builder;
     myDialog2 builder2;
     myDialog3 builder3;
     myDialog4 builder4;
+    lastDialog builder5;
+    boolean locker=false;
     public  static  int myId=-1;
     public  static  int gameID=-1;
 
@@ -59,13 +65,15 @@ public class MainActivity extends AppCompatActivity
         builder2 = new myDialog2(this);
         builder3 = new myDialog3(this);
         builder4 = new myDialog4(this);
-       snake= (Button) findViewById(R.id.snakebutton);
+        builder5 = new lastDialog(this);
+        alert=builder5.create();
+        snake= (Button) findViewById(R.id.snakebutton);
 
 
 
 
 
-        start();
+
 
 
         Button pong;
@@ -77,8 +85,11 @@ public class MainActivity extends AppCompatActivity
             {
 
 
-
-
+            if(!locker)
+            {
+                return;
+            }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame1");
@@ -108,7 +119,11 @@ public class MainActivity extends AppCompatActivity
             {
 
 
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame1");
@@ -134,7 +149,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame2");
@@ -165,7 +184,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame2");
@@ -197,7 +220,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame3");
@@ -223,7 +250,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame3");
@@ -250,7 +281,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame4");
@@ -279,7 +314,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
+                if(!locker)
+                {
+                    return;
+                }
+                locker=true;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame4");
@@ -299,16 +338,32 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
+        mHandler2 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message)
+            {
+                alert=builder5.create();
+                alert.show();
+            }
+        };
     }
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEvent(MessegeEvent event) throws JSONException
     {
+
+        if(event.message.equals("Eror"))
+        {
+            locker=true;
+            Message message = mHandler2.obtainMessage();
+            message.sendToTarget();
+
+        }
         JSONObject mesage = new JSONObject(event.message);
 
 
       if(mesage.getString("method").equals("start"))
       {
+          locker=true;
           myId=mesage.getInt("clientId");
       }
       if(mesage.getString("method").equals("loadgame1"))
@@ -371,7 +426,7 @@ public class MainActivity extends AppCompatActivity
             this.setTitle("Поиск игры");
             this.setMessage("Вы хотите выйти из очереди в игру ?")
 
-
+                    .setCancelable(false)
                     .setNegativeButton("Да", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id)
                         {
@@ -408,7 +463,7 @@ public class MainActivity extends AppCompatActivity
             this.setTitle("Поиск игры");
             this.setMessage("Вы хотите выйти из очереди в игру ?")
 
-
+                    .setCancelable(false)
                     .setNegativeButton("Да", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id)
                         {
@@ -444,7 +499,7 @@ public class MainActivity extends AppCompatActivity
             this.setTitle("Поиск игры");
             this.setMessage("Вы хотите выйти из очереди в игру ?")
 
-
+                    .setCancelable(false)
                     .setNegativeButton("Да", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id)
                         {
@@ -507,32 +562,63 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+    class lastDialog extends AlertDialog.Builder
+    {
+
+        public lastDialog(Context context)
+        {
+            super(context);
+            this.setTitle("Ошибка подключения");
+            this.setMessage("Проверьте ваше интренет соединение")
+
+                    .setCancelable(false)
+
+                    .setNegativeButton("Выход", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            dialog.cancel();
+                            MainActivity.super.finish();
+
+
+
+
+                        }
+                    });
+
+        }
+    }
 
     private void start()
     {
         Request request ;
 
         OkHttpClient client = new OkHttpClient();
-        request = new Request.Builder().url("ws://192.168.1.46:7960").build();
-
+        request = new Request.Builder().url("ws://gamer.na4u.ru").build();
+    try {
         ws = client.newWebSocket(request, new EchoWebSocketListener());
+    }
+       catch (Exception e)
+       {
 
-//       MyThread coonection= new MyThread();
-//        coonection.start();
-
-
-
+       }
 
 
     }
 
 
 
+    public void showExit()
+    {
 
+        Toast.makeText(this,"you choose no action for alertbox",
+                Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onResume()
     {
+        locker=false;
         super.onResume();
        if(!EventBus.getDefault().isRegistered(this))
        {
@@ -548,6 +634,7 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         EventBus.getDefault().register(this);
+        start();
     }
     @Override
     protected void onPause()
@@ -555,11 +642,13 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
         EventBus.getDefault().unregister(this);
     }
-
-    private void output(final String txt)
+    @Override
+    protected void onDestroy()
     {
+        super.onDestroy();
 
     }
+
 }
 
 

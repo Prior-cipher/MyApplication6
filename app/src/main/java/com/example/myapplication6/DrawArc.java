@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
@@ -78,6 +79,8 @@ public class DrawArc extends View
        canvas.drawRect( Math.round(pl.ballX*kx), Math.round(pl.ballY*ky)  ,  Math.round((1 * 50 + pl.ballX)*kx), Math.round(pl.ballY*ky) +  50 , p);
     }
 
+
+
     private  void drawBriks (Canvas canvas)
     {
 
@@ -85,11 +88,55 @@ public class DrawArc extends View
             BrikBreakeer b = pl.listofBriks.get(i);
             r = new RectF((float) (b.getX()*kx), (float) (b.getY()*ky), (float) (b.getX()*kx + 100*kx), (float)( b.getY()*ky + 50*ky));
             p.setColor(switcher(b.getBrick()));
-            canvas.drawRect( r, p);
+            canvas.drawBitmap(skin(b.getBrick()), null, r, p);
+
         }
     }
 
 
+//    private  void drawBriks (Canvas canvas)
+//    {
+//
+//        for (int i = 0; i < pl.listofBriks.size(); i++) {
+//            BrikBreakeer b = pl.listofBriks.get(i);
+//            r = new RectF((float) (b.getX()*kx), (float) (b.getY()*ky), (float) (b.getX()*kx + 100*kx), (float)( b.getY()*ky + 50*ky));
+//            p.setColor(switcher(b.getBrick()));
+//            canvas.drawRect( r, p);
+//        }
+//    }
+
+    private Bitmap skin(int a)
+    {
+
+        switch (a) {
+            case 0:
+                 return BitmapFactory.decodeResource(getResources(), R.drawable.brick_aqua);
+
+            case 1:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_blue);
+
+            case 2:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_green);
+
+            case 3:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_orange);
+
+            case 4:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_pink);
+
+            case 5:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_purple);
+
+            case 6:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_red);
+
+            case 7:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.brick_yellow);
+
+            default:
+                return null;
+        }
+    }
 
 
     private int switcher(int a) {

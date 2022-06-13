@@ -6,7 +6,7 @@ const {Worker,BroadcastChannel} = require("worker_threads");
 
 //const BroadcastChannel = require('broadcast-channel');
 const httpServer = http.createServer();
-httpServer.listen(7960, () => console.log("Listening.. on 7960"))
+httpServer.listen(56891, () => console.log(`Listening.. on ${process.env.APP_IP}:${process.env.APP_PORT}`))
 
 let clients = {};
 
