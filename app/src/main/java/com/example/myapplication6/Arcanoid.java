@@ -12,6 +12,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -60,6 +62,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
     Runnable loop;
 
     Handler handler;
+    Handler mHandler2;
     ArcanoidLogic pl;
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -150,7 +153,14 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
 
 
         ws.send("{\"method\": \"startgame\",\"id\": \"${}\"}");
-
+        mHandler2 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message)
+            {
+                AlertDialog alert=new lastDialog(Arcanoid.super.getApplicationContext()).create();
+                alert.show();
+            }
+        };
 
          loop = new Runnable()
         {
@@ -313,6 +323,15 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessegeEvent event) throws JSONException
     {
+
+        if(event.message.equals("Eror"))
+        {
+
+            Message message = mHandler2.obtainMessage();
+            message.sendToTarget();
+
+
+        }
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         JSONObject userJson = new JSONObject(event.message);
@@ -346,7 +365,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
             }
             winDialog builderr = new winDialog(this,s);
             AlertDialog alert = builderr.create();
-            alert.onBackPressed();
+            //alert.onBackPressed();
             //Setting the title manually
 
             alert.setTitle("Сообщение от сервера");
@@ -363,7 +382,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
 
             winDialog builderr = new winDialog(this,s);
             AlertDialog alert = builderr.create();
-            alert.onBackPressed();
+            //alert.onBackPressed();
             //Setting the title manually
 
             alert.setTitle("Сообщение от сервера");

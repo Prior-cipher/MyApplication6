@@ -413,7 +413,7 @@ try {
 
 })
 
-setInterval(raspred,1000);
+setInterval(raspred,10000);
 
 
 

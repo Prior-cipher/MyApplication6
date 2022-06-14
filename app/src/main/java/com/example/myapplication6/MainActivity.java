@@ -562,32 +562,7 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-    class lastDialog extends AlertDialog.Builder
-    {
 
-        public lastDialog(Context context)
-        {
-            super(context);
-            this.setTitle("Ошибка подключения");
-            this.setMessage("Проверьте ваше интренет соединение")
-
-                    .setCancelable(false)
-
-                    .setNegativeButton("Выход", new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                            dialog.cancel();
-                            MainActivity.super.finish();
-
-
-
-
-                        }
-                    });
-
-        }
-    }
 
     private void start()
     {
@@ -608,12 +583,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    public void showExit()
-    {
 
-        Toast.makeText(this,"you choose no action for alertbox",
-                Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onResume()
