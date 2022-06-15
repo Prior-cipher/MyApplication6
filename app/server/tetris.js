@@ -457,12 +457,13 @@ function checkMoveRight2()
 
 function nextBrick1() {
     currentBrick = new Brick(nextBrick.type);
-    nextBrick.type = getRandomBrick();
+    nextBrick= new Brick(getRandomBrick());
+    
 }
 
 function nextBrick21() {
     currentBrick2 = new Brick(nextBrick2.type);
-    nextBrick2.type = getRandomBrick();
+    nextBrick2= new Brick(getRandomBrick());
 }
 function checkRotation() 
 {

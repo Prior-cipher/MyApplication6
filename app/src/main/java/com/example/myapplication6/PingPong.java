@@ -13,6 +13,8 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -53,7 +55,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
     TextView scoreOne;
     TextView scoreTwo;
     int speed;
-
+    lastDialog builder;
     private float[] rotationMatrix;     //Матрица поворота
     private float[] accelData;           //Данные с акселерометра
     private float[] magnetData;       //Данные геомагнитного датчика
@@ -61,6 +63,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
     Runnable loop;
 
     Handler handler;
+    Handler mHandler2;
     pongLogic pl;
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -96,15 +99,15 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
 
 
 
-        float dip = 42f;
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dip,
-                r.getDisplayMetrics()
-        );
-
-        //int height = metrics.heightPixels-Math.round(px);
+//        float dip = 42f;
+//        Resources r = getResources();
+//        float px = TypedValue.applyDimension(
+//                TypedValue.COMPLEX_UNIT_DIP,
+//                dip,
+//                r.getDisplayMetrics()
+//        );
+//
+//        int height = metrics.heightPixels-Math.round(px);
         int height = metrics.heightPixels;
 
         int wight = metrics.widthPixels;
@@ -148,10 +151,17 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
         magnetData = new float[3];
         OrientationData = new float[3];
 
-
+        builder= new lastDialog(this);
 
         ws.send("{\"method\": \"startgame\",\"id\": \"${}\"}");
-
+        mHandler2 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message)
+            {
+                AlertDialog alert=builder.create();
+                alert.show();
+            }
+        };
 
          loop = new Runnable()
         {
@@ -314,6 +324,15 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessegeEvent event) throws JSONException
     {
+
+        if(event.message.equals("Eror"))
+        {
+
+            Message message = mHandler2.obtainMessage();
+            message.sendToTarget();
+
+
+        }
         JSONObject userJson = new JSONObject(event.message);
         if(userJson.getString("method").equals("gamePongStat"))
         {

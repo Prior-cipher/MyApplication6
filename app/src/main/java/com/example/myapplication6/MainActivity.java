@@ -8,6 +8,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
+        start();
 
 
         Button pong;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             {
                 return;
             }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame1");
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame1");
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame2");
@@ -188,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame2");
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame3");
@@ -254,7 +256,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame3");
@@ -285,7 +287,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame4");
@@ -318,7 +320,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     return;
                 }
-                locker=true;
+                locker=false;
                 JSONObject mesage = new JSONObject();
                 try {
                     mesage.put("method", "iwantgame4");
@@ -346,6 +348,16 @@ public class MainActivity extends AppCompatActivity
                 alert.show();
             }
         };
+
+
+        ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cm.getActiveNetworkInfo();
+        boolean connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+        if(!connected){
+            alert=builder5.create();
+            alert.show();
+        }
+
     }
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEvent(MessegeEvent event) throws JSONException
@@ -353,7 +365,7 @@ public class MainActivity extends AppCompatActivity
 
         if(event.message.equals("Eror"))
         {
-            locker=true;
+            locker=false;
             Message message = mHandler2.obtainMessage();
             message.sendToTarget();
 
@@ -570,6 +582,7 @@ public class MainActivity extends AppCompatActivity
 
         OkHttpClient client = new OkHttpClient();
         request = new Request.Builder().url("ws://gamer.na4u.ru").build();
+        //request = new Request.Builder().url("ws://192.168.1.46:56891").build();
     try {
         ws = client.newWebSocket(request, new EchoWebSocketListener());
     }
@@ -588,7 +601,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume()
     {
-        locker=false;
+        locker=true;
         super.onResume();
        if(!EventBus.getDefault().isRegistered(this))
        {
@@ -604,7 +617,7 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         EventBus.getDefault().register(this);
-        start();
+
     }
     @Override
     protected void onPause()

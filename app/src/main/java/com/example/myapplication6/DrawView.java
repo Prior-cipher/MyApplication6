@@ -109,7 +109,7 @@ class DrawView extends View
 
     private  void drabPred(Canvas canvas)
     {
-        int yOffset =1;
+        int yOffset =200-2*k -10;
 
         int left=(width/2-2*k);
         if(game.nextBrick!=null) {
@@ -198,11 +198,12 @@ class DrawView extends View
         {
             for (int j = 0; j <game.blocks[i].length ; j++)
             {
-                if(game.blocks[i][j])
-                {
+                if(game.blocks[i][j]) {
+                    if (!game.blocksColor[i][j].equals("none")) {
 
                     p.setColor(Color.parseColor(game.blocksColor[i][j]));
-                    canvas.drawRect((width-10*k)/2 + j * k, yOffset + i * k + 2, (width-10*k)/2 + (j+1) * k -2, yOffset + (i + 1) * k - 2, p);
+                    canvas.drawRect((width - 10 * k) / 2 + j * k, yOffset + i * k + 2, (width - 10 * k) / 2 + (j + 1) * k - 2, yOffset + (i + 1) * k - 2, p);
+                }
                 }
             }
         }
@@ -215,8 +216,8 @@ class DrawView extends View
 
                     p.setColor(Color.GRAY);
                     p.setTextSize(72);
-                    canvas.drawText("" + game.score, width-(width-10*k)/2-36, 190, p);
-                    canvas.drawText("" + game.score1, (width-10*k)/2, 190, p);
+                    canvas.drawText("" + game.score1, width-(width-10*k)/2- game.score1, 190, p);
+                    canvas.drawText("" + game.score, (width-10*k)/2, 190, p);
 
 
     }

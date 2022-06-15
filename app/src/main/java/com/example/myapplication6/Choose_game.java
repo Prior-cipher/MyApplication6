@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -36,7 +39,8 @@ public class Choose_game extends AppCompatActivity {
 
     Runnable loop;
     Game gameLogic;
-    TextView score;
+    lastDialog builder;
+    Handler mHandler2;
     int width;
 
     @Override
@@ -49,7 +53,14 @@ public class Choose_game extends AppCompatActivity {
 
 
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+
+        int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+
+
         int k=metrics.heightPixels;
+//        if (resourceId > 0) {
+//           k-= this.getResources().getDimensionPixelSize(resourceId);
+//        }
         width =metrics.widthPixels ;
         drawView = new DrawView(this, gameLogic,width,k);
 
@@ -75,9 +86,16 @@ public class Choose_game extends AppCompatActivity {
 
 
 
+        builder= new lastDialog(this);
 
-
-
+        mHandler2 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message)
+            {
+                AlertDialog alert=builder.create();
+                alert.show();
+            }
+        };
 
 
 
@@ -95,7 +113,7 @@ public class Choose_game extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
@@ -151,6 +169,15 @@ public class Choose_game extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessegeEvent event) throws JSONException
     {
+
+        if(event.message.equals("Eror"))
+        {
+
+            Message message = mHandler2.obtainMessage();
+            message.sendToTarget();
+
+
+        }
         String s;
         JSONObject userJson = new JSONObject(event.message);
 
@@ -171,9 +198,9 @@ public class Choose_game extends AppCompatActivity {
 
             gameLogic.currentBrick.color= s;
 
-            s =userJson.getJSONObject("nextBrick").getString("coordinates");
+            s =userJson.getString("nextBrick");
 
-            gameLogic.nextBrick.coordinates=gson.fromJson(s,Coordinate[].class);
+            gameLogic.nextBrick=gson.fromJson(s,Brick.class);
             s =userJson.getString("blocks");
             gameLogic.blocks=gson.fromJson(s,Boolean[][].class);
 
@@ -190,14 +217,14 @@ public class Choose_game extends AppCompatActivity {
             if(userJson.getBoolean("win1"))
             {
 
-                s= String.format("Игра оконченна вы вйграли ваш счет = %d", 1000);
+                s= ("Игра оконченна вы выйграли ваш счет = "+gameLogic.score);
             }
             else {
-                s= String.format("Игра оконченна вы програли ваш счет = %d", 1000);
+                s= ("Игра оконченна вы програли ваш счет = "+gameLogic.score);
             }
             Choose_game.winDialog builder = new Choose_game.winDialog(this,s);
             AlertDialog alert = builder.create();
-            alert.onBackPressed();
+
             //Setting the title manually
 
             alert.setTitle("Сообщение от сервера");
@@ -213,12 +240,12 @@ public class Choose_game extends AppCompatActivity {
             flag=false;
 
 
-            s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", 1000);
+            s= ("Игра оконченна ваш опонет сдался ваш счет = "+gameLogic.score );
 
 
             Choose_game.winDialog builder = new Choose_game.winDialog(this,s);
             AlertDialog alert = builder.create();
-            alert.onBackPressed();
+
             //Setting the title manually
 
             alert.setTitle("Сообщение от сервера");

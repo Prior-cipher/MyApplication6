@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -35,7 +37,8 @@ public class Snake  extends AppCompatActivity
     SnakeLogic gameLogic;
     TextView score;
     float width;
-
+    lastDialog builder;
+    Handler mHandler2;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -47,7 +50,7 @@ public class Snake  extends AppCompatActivity
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
         width = metrics.widthPixels;
 
-        float k=Float.valueOf(metrics.widthPixels) /1080;
+
 
         drawView = new SnakeView(this, gameLogic,metrics.widthPixels,metrics.heightPixels);
 
@@ -79,10 +82,17 @@ public class Snake  extends AppCompatActivity
         setContentView(game);
         score.setText("0");
 
+        builder= new lastDialog(this);
 
 
-
-
+        mHandler2 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message)
+            {
+                AlertDialog alert=builder.create();
+                alert.show();
+            }
+        };
 
 
 
@@ -186,8 +196,17 @@ public class Snake  extends AppCompatActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessegeEvent event) throws JSONException
     {
+        if(event.message.equals("Eror"))
+        {
+
+            Message message = mHandler2.obtainMessage();
+            message.sendToTarget();
+
+
+        }
         JSONObject userJson = new JSONObject(event.message);
         String s= "";
+
         if(userJson.getString("method").equals("gameSnakeStat"))
         {
 

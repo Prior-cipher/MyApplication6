@@ -69,6 +69,7 @@ for (let i = 3; i < 7; i++) {
     {
         BrickList.push(new Bricks( j * 150+80, i * 100+580));
         BrickListReverser.push(new Bricks( 1080-(j * 150+80), 1920-(i * 100+580)));
+        BrickListReverser[BrickListReverser.length-1].c=BrickList[BrickListReverser.length-1].c;
     }
 }
 function takt()

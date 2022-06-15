@@ -64,6 +64,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
     Handler handler;
     Handler mHandler2;
     ArcanoidLogic pl;
+    lastDialog builder;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -80,35 +81,33 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
         scoreTwo=new TextView( this);
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 
-//        int size2=0;
-//        Resources resources = this.getResources();
-//        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-//        if (resourceId > 0)
-//        {
-//             size2=resources.getDimensionPixelSize(resourceId);
-//
-//        }
+
         RelativeLayout scors= new RelativeLayout(this);
 
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-        //
+
 
         Resources resources = this.getResources();
 
 
+        builder= new lastDialog(this);
 
+//        float dip = 42f;
+//        Resources r = getResources();
+//        float px = TypedValue.applyDimension(
+//                TypedValue.COMPLEX_UNIT_DIP,
+//                dip,
+//                r.getDisplayMetrics()
+//        );
+//
+//        int height = metrics.heightPixels-Math.round(px);
 
-        float dip = 42f;
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dip,
-                r.getDisplayMetrics()
-        );
-
-        //int height = metrics.heightPixels-Math.round(px);
         int height = metrics.heightPixels;
 
+        int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height-= this.getResources().getDimensionPixelSize(resourceId);
+        }
         int wight = metrics.widthPixels;
 
         pongView = new DrawArc(this,height,wight,pl);
@@ -157,7 +156,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void handleMessage(Message message)
             {
-                AlertDialog alert=new lastDialog(Arcanoid.super.getApplicationContext()).create();
+                AlertDialog alert=builder.create();
                 alert.show();
             }
         };

@@ -300,7 +300,7 @@ let score1= 0;
          else
 
             {
-                if (pred[0] < 0 || pred[0] > 20 || pred[1] < 0 || pred[1] > 20 )
+                if (pred[0] < 0 || pred[0] > 19 || pred[1] < 0 || pred[1] > 19 )
                 {
                     status1=false;
                     clearInterval(t);
@@ -311,7 +311,7 @@ let score1= 0;
                    
                 }
 
-                if (pred1[0] < 0 || pred1[0] > 20 || pred1[1] < 0 || pred1[1] > 20 )
+                if (pred1[0] < 0 || pred1[0] > 19 || pred1[1] < 0 || pred1[1] > 19 )
                 {
                     status1=false;
                     clearInterval(t);
