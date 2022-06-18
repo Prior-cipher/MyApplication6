@@ -217,10 +217,10 @@ public class Choose_game extends AppCompatActivity {
             if(userJson.getBoolean("win1"))
             {
 
-                s= ("Игра оконченна вы выйграли ваш счет = "+gameLogic.score);
+                s= ("Игра оконченна вы выиграли ваш счет = "+gameLogic.score);
             }
             else {
-                s= ("Игра оконченна вы програли ваш счет = "+gameLogic.score);
+                s= ("Игра оконченна вы проиграли ваш счет = "+gameLogic.score);
             }
             Choose_game.winDialog builder = new Choose_game.winDialog(this,s);
             AlertDialog alert = builder.create();
@@ -240,7 +240,7 @@ public class Choose_game extends AppCompatActivity {
             flag=false;
 
 
-            s= ("Игра оконченна ваш опонет сдался ваш счет = "+gameLogic.score );
+            s= ("Игра окончена ваш оппонент сдался ваш счет = "+gameLogic.score );
 
 
             Choose_game.winDialog builder = new Choose_game.winDialog(this,s);

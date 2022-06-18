@@ -68,7 +68,7 @@ for (let i = 3; i < 7; i++) {
     for (let j = 1; j < 6; j++) 
     {
         BrickList.push(new Bricks( j * 150+80, i * 100+580));
-        BrickListReverser.push(new Bricks( 1080-(j * 150+80), 1920-(i * 100+580)));
+        BrickListReverser.push(new Bricks( 980-(j * 150+80), 1920-(i * 100+580)));
         BrickListReverser[BrickListReverser.length-1].c=BrickList[BrickListReverser.length-1].c;
     }
 }
@@ -133,9 +133,9 @@ function takt()
 
 
 
-    if((ballX>=curentPosition &&ballX<=curentPosition+350||ballX+50>=curentPosition &&ballX<=curentPosition+350) &&ballY>=height-50)
+    if((ballX>=curentPosition &&ballX<=curentPosition+350||ballX+50>=curentPosition &&ballX<=curentPosition+350) &&ballY>=height-100)
     {
-        ballY=height-49;
+        ballY=height-101;
         ballYSpeed=-ballYSpeed;
         ballXxpeed+=curentSpeed;
         hod=true;
@@ -148,9 +148,9 @@ function takt()
         ballYSpeed=-30;
         score1-=1000;
     }
-    if((ballX>=enemyPosition &&ballX<=enemyPosition+350 || ballX+50>=enemyPosition && ballX+50<=enemyPosition+350 ) && ballY<=50)
+    if((ballX>=enemyPosition &&ballX<=enemyPosition+350 || ballX+50>=enemyPosition && ballX+50<=enemyPosition+350 ) && ballY<=100)
     {
-        ballY=51;
+        ballY=101;
         ballXxpeed+=enemySpeed;
         ballYSpeed=-ballYSpeed;
         hod=false;
@@ -215,7 +215,7 @@ else {
 
     
     parentPort.postMessage({"method":"gameArcStat","id":id1,ballX,ballY,curentPosition,enemyPosition,scoreO,score1,BrickList});
-    parentPort.postMessage({"method":"gameArcStat","id":id2,"ballX":1080-ballX,"ballY":1920-ballY,"curentPosition":730-enemyPosition,"enemyPosition":730-curentPosition,"scoreO":score1,"score1":scoreO,"BrickList":BrickListReverser});
+    parentPort.postMessage({"method":"gameArcStat","id":id2,"ballX":1030-ballX,"ballY":1920-ballY,"curentPosition":730-enemyPosition,"enemyPosition":730-curentPosition,"scoreO":score1,"score1":scoreO,"BrickList":BrickListReverser});
 }
 
 function changeDirection(xBrick,yBrick)

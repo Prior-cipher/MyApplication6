@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
                 //Setting the title manually
 
-                alert.setTitle("AlertDialogExample");
+
                 alert.show();
 
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
 
                 //Setting the title manually
 
-                alert.setTitle("AlertDialogExample");
+
                 alert.show();
 
 
@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             //  Action for 'NO' Button
 
-
+                            locker=true;
                             JSONObject mesage = new JSONObject();
                             try {
                                 mesage.put("method", "stopfind");
@@ -481,7 +481,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             //  Action for 'NO' Button
 
-
+                            locker=true;
                             JSONObject mesage = new JSONObject();
                             try {
                                 mesage.put("method", "stopfind2");
@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             //  Action for 'NO' Button
 
-
+                            locker=true;
                             JSONObject mesage = new JSONObject();
                             try {
                                 mesage.put("method", "stopfind3");
@@ -554,7 +554,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             //  Action for 'NO' Button
 
-
+                            locker=true;
                             JSONObject mesage = new JSONObject();
                             try {
                                 mesage.put("method", "stopfind4");

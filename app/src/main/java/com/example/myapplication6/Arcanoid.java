@@ -101,13 +101,13 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
 //        );
 //
 //        int height = metrics.heightPixels-Math.round(px);
+//
+       int height = metrics.heightPixels;
 
-        int height = metrics.heightPixels;
-
-        int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            height-= this.getResources().getDimensionPixelSize(resourceId);
-        }
+//       int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+//        if (resourceId > 0) {
+//           height-= this.getResources().getDimensionPixelSize(resourceId);
+//       }
         int wight = metrics.widthPixels;
 
         pongView = new DrawArc(this,height,wight,pl);
@@ -357,10 +357,10 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
             if(userJson.getBoolean("win1"))
             {
 
-                s= String.format("Игра оконченна вы вйграли ваш счет = %d", this.pl.scoreO*1000);
+                s= "Игра оконченна вы выиграли ваш счет = "+ this.pl.scoreO*1000;
             }
            else {
-                s= String.format("Игра оконченна вы програли ваш счет = %d", this.pl.scoreO*1000);
+                s= "Игра оконченна вы проиграли ваш счет = "+ this.pl.scoreO*1000;
             }
             winDialog builderr = new winDialog(this,s);
             AlertDialog alert = builderr.create();
@@ -376,7 +376,7 @@ public class Arcanoid extends AppCompatActivity implements View.OnClickListener,
             String s="";
 
 
-                s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", this.pl.scoreO);
+                s= "Игра оконченна ваш опонет сдался ваш счет "+ this.pl.scoreO;
 
 
             winDialog builderr = new winDialog(this,s);

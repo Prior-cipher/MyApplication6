@@ -43,7 +43,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class PingPong extends AppCompatActivity implements View.OnClickListener, SensorEventListener
+public class PingPong extends AppCompatActivity implements  SensorEventListener
 {
     DrawPong pongView;
     WebSocket ws;
@@ -209,28 +209,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
         }
 
     }
-    @Override
-    public void onClick(View view) {
 
-    }
-
-    public static Point getNavigationBarSize(Context context) {
-        Point appUsableSize = getAppUsableScreenSize(context);
-        Point realScreenSize = getRealScreenSize(context);
-
-        // navigation bar on the side
-        if (appUsableSize.x < realScreenSize.x) {
-            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
-        }
-
-        // navigation bar at the bottom
-        if (appUsableSize.y < realScreenSize.y) {
-            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
-        }
-
-        // navigation bar is not present
-        return new Point();
-    }
 
     public static Point getAppUsableScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -352,10 +331,10 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
             if(userJson.getBoolean("win1"))
             {
 
-                s= String.format("Игра оконченна вы вйграли ваш счет = %d", this.pl.scoreO*1000);
+                s= "Игра оконченна вы выиграли ваш счет = "+ this.pl.scoreO*1000;
             }
            else {
-                s= String.format("Игра оконченна вы програли ваш счет = %d", this.pl.scoreO*1000);
+                s= "Игра оконченна вы проиграли ваш счет = "+ this.pl.scoreO*1000;
             }
             winDialog builder = new winDialog(this,s);
             AlertDialog alert = builder.create();
@@ -371,7 +350,7 @@ public class PingPong extends AppCompatActivity implements View.OnClickListener,
             String s="";
 
 
-                s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", this.pl.scoreO*1000);
+                s= "Игра окончена ваш оппонент сдался ваш счет = "+ this.pl.scoreO*1000;
 
 
             winDialog builder = new winDialog(this,s);

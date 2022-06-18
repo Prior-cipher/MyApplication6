@@ -243,10 +243,10 @@ public class Snake  extends AppCompatActivity
             if(userJson.getBoolean("win1"))
             {
 
-                s= String.format("Игра оконченна вы вйграли ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
+                s= "Игра оконченна вы выиграли ваш счет = "+ Integer.parseInt(score.getText().toString()) *1000;
             }
             else {
-                s= String.format("Игра оконченна вы програли ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
+                s= "Игра оконченна вы проиграли ваш счет = "+ Integer.parseInt(score.getText().toString()) *1000;
             }
             Snake.winDialog builder = new Snake.winDialog(this,s);
             AlertDialog alert = builder.create();
@@ -262,7 +262,7 @@ public class Snake  extends AppCompatActivity
             flag=false;
 
 
-            s= String.format("Игра оконченна ваш опонет сдался ваш счет = %d", Integer.parseInt(score.getText().toString()) *1000);
+            s= "Игра оконченна ваш оппонент сдался ваш счет = "+ Integer.parseInt(score.getText().toString()) *1000;
 
 
             Snake.winDialog builder = new Snake.winDialog(this,s);
